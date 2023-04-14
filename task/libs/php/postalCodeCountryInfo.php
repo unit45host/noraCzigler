@@ -6,7 +6,7 @@
 
 	$executionStartTime = microtime(true);
 
-	$url='http://api.geonames.org/postalCodeCountryInfoJSON?formatted=true&username=flightltd&style=full' ;
+	$url='http://api.geonames.org/postalCodeCountryInfoJSON?formatted=true&username=czigler.nora&style=full' ;
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -23,7 +23,7 @@
 	$output['status']['name'] = "ok";
 	$output['status']['description'] = "success";
 	$output['status']['returnedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms";
-	$output['data'] = $decode['geonames'];
+	$output['data'] = $decode;
 	
 	header('Content-Type: application/json; charset=UTF-8');
 
