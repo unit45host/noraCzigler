@@ -5,9 +5,8 @@
 	error_reporting(E_ALL);
 
 	$executionStartTime = microtime(true);
-	
-	$url='http://api.geonames.org/srtm1JSON?username=flightltd&lat=' . $_REQUEST['lat'] . '&lng=' . $_REQUEST['lng']';
 
+	$url='http://api.geonames.org/postalCodeCountryInfoJSON?formatted=true&username=flightltd&style=full' ;
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -17,7 +16,7 @@
 	$result=curl_exec($ch);
 
 	curl_close($ch);
-
+   
 	$decode = json_decode($result,true);	
 
 	$output['status']['code'] = "200";
