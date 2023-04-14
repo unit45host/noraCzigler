@@ -6,7 +6,7 @@ if (!isset($_REQUEST['lat']) || !isset($_REQUEST['lng'])) {
     exit();
 }
 
-$url = "http://api.geonames.org/srtm1JSON?lat=" . $_REQUEST['lat'] . "&lng=" . $_REQUEST['lng'] . "&username=flightltd";
+$url = 'http://api.geonames.org/srtm1JSON?username=flightltd&lat=$lat&lng=$lng';
 
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $url);
