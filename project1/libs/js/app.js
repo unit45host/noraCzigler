@@ -28,7 +28,20 @@ const country = {
   north: 0,
   south: 0,
   east: 0,
-  west: 0
+  west: 0,
+  newsTitle: "",
+  newsTitle2: "",
+  newsTitle3: "",
+  newsTitle4: "",
+  newsLink: "",
+  newsLink2: "",
+  newsLink3: "",
+  newsLink4: "",
+  newsImage: "",
+  newsImage2: "",
+  newsImage3: "",
+  newsImage4: "",
+
 };
 
 
@@ -54,10 +67,9 @@ const regionMarkers = L.markerClusterGroup();
 
 
 //Setting up Leaflet maps
-const map = L.map("map", {dragging: !L.Browser.mobile, tap: !L.Browser.mobile}).fitWorld();
 
 
-const mapDesign = L.tileLayer(
+const streets = L.tileLayer(
   "https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key={accessToken}", //map layer
   {
     attribution:
@@ -70,8 +82,30 @@ const mapDesign = L.tileLayer(
   }
 );
 
+const map = L.map('map', {
+  layers: [streets]
+}).setView([54.5, -4], 6);
 
-mapDesign.addTo(map);
+ const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+ });
+
+var basemaps = {
+   "Streets": streets,
+   "Satellite": satellite
+ };
+
+const overlays = {
+  "Earthquake": earthquakeMarkers, 
+   "Region": regionMarkers,
+ "Wikipedia": wikiMarkers
+ };
+
+ L.control.layers(basemaps, overlays).addTo(map);
+
+
+
+
 
 const foundLocation = (e) => {
   clickLocationLat = e.latlng.lat;
@@ -140,6 +174,7 @@ L.easyButton('fa-solid fa-circle-info', function(btn,_) {
   displayTopLevel() 
   $(".modal").modal('show');}, function () {}).addTo(map);
 
+
 L.easyButton('fa-cloud-sun-rain', function (btn,_) {
   btn.button.style.color = 'lightblue';
   resetModal()
@@ -152,9 +187,17 @@ L.easyButton('fa-solid fa-money-bill-transfer', function (btn,_) {
   displayMoney()
   $(".modal").modal('show');}, function() {}).addTo(map);
 
+  L.easyButton('far fa-newspaper', function () {
+  resetModal()
+    displayNews()  
+  $(".modal").modal('show');}, function() {
+
+  }).addTo(map);
+
 L.easyButton('fas fa-search-minus', function() {
   map.setView([centerOnLat, centerOnLong], 5)
 }).addTo(map);
+
 
 
 const getSelectData = () => {
@@ -171,6 +214,55 @@ const displaySelectData = (data) => {
     );
   }
 };
+
+const getNews = (data) => {
+  const results = data.data;
+  if (results[0]) {
+    country.newsTitle = results[0][0];
+    country.newsLink = results[0][1];
+    country.newsImage = results[0][2];
+  }
+  if (results[1]) {
+    country.newsTitle2 = results[1][0];
+    country.newsLink2 = results[1][1];
+    country.newsImage2 = results[1][2];
+  }
+  if (results[2]) {
+    country.newsTitle3 = results[2][0];
+    country.newsLink3 = results[2][1];
+    country.newsImage3 = results[2][2];
+  }
+  if (results[3]) {
+    country.newsTitle4 = results[3][0];
+    country.newsLink4 = results[3][1];
+    country.newsImage4 = results[3][2];
+  }
+};
+
+
+const displayNews = () => {
+  $("#moneyConverter").remove();
+  const defaultImage = "libs/breaking_news.png";
+
+    if(!country.newsImage || !country.newsImage2 || !country.newsImage3 || !country.newsImage4){
+        country.newsImage = defaultImage;
+        country.newsImage2 = defaultImage;
+        country.newsImage3 = defaultImage;
+        country.newsImage4 = defaultImage;
+    } 
+    
+  $("#item-A").html("Latest News");
+  $("#item-B").html(`<img class="newsImage" src="libs/breaking_news.png">`);
+  $("#item-2").html(`<a href=${country.newsLink} target="_blank">${country.newsTitle}</a>`);
+  $("#item-C").html(`<img class="newsImage" src="libs/breaking_news.png">`);
+  $("#item-3").html(`<a href=${country.newsLink2} target="_blank">${country.newsTitle2}</a>`);
+  $("#item-D").html(`<img class="newsImage" src="libs/breaking_news.png">`);
+  $("#item-4").html(`<a href=${country.newsLink3} target="_blank">${country.newsTitle3}</a>`);
+  $("#item-E").html(`<img class="newsImage" src="libs/breaking_news.png">`);
+  $("#item-5").html(`<a href=${country.newsLink4} target="_blank">${country.newsTitle4}</a>`);
+};
+
+
 
 
 
@@ -240,12 +332,14 @@ const zoomToPlace = (data) => {
     shape: 'star',
     prefix: 'fa',
   })
-  capitalMarker = L.marker([clickLocationLat, clickLocationLng], {icon: landmarkMarker}).addTo(map).bindPopup(
+  capitalMarker = L.marker([clickLocationLat, clickLocationLng], {icon: landmarkMarker}).addTo(map).bindTooltip(
         `The capital of ${country.countryName} is ${country.capital}. <br>${sunriseString}`);
 
 callApi("getEarthquakes", country.north, country.south, displayEarthq, country.east, country.west);
 callApi("getWiki", country.north, country.south, displayWiki, country.east, country.west);
+
 callApi("getCountryRegions", country.geonameId, '', displayRegions);
+
 
 };
 
@@ -297,28 +391,30 @@ polyGonLayer = L.geoJson(geoJsonFeature, {
 };
 
 const displayTopLevel = () => {
+  $("#moneyConverter").remove();
   $("#item-A").html(country.officialName);
   $("#item-B").html("Local time");
-   $("#item-2").html(`${country.currentHours}:${country.currentMinutes}${country.amOrPm}`);
+  $("#item-2").html(`${country.currentHours}:${country.currentMinutes}${country.amOrPm}`);
   $("#item-C").html("Capital city");
   $("#item-3").html(country.capital);
   $("#item-D").html("Population");
   $("#item-4").html(country.population.toFixed(2) + "m");
-  $("#item-E").html("Area");
-  $("#item-5").html(`${country.area} km&sup2;`);
   $("#item-F").html("Inhabitants");
   $("#item-6").html(country.demonym);
-    $("#item-G").html("Main language(s)");
-  const languages = Object.values(country.languages);
 
-  $("#item-7").html(`${languages[0]}`);
-  if (languages.length > 1) {
-    for (let i = 1; i < languages.length; i++) {
-      $("#item-7").append(`<br>${languages[i]}`);
-    }
+  const languages = Object.values(country.languages);
+  let languagesHtml = "";
+
+  if (languages.length > 0) {
+    languagesHtml = languages.join("<br>");
   }
 
+  $("#item-E").html("Languages");
+  $("#item-5").html(languagesHtml);
 };
+
+
+
 
 
 const resetModal = () => {
@@ -343,50 +439,115 @@ const getWeatherData = (data) => {
   country.weatherDescription = results.current.weather[0].description;
   country.maxtemp = Math.round(results.daily[0].temp.max);
   country.mintemp = Math.round(results.daily[0].temp.min);
-  country.windspeed = 2.23694 *parseFloat(results.daily[0].wind_speed).toFixed(0);
   country.weathericon = results.current.weather[0].icon;
-  country.humidity = results.current.humidity;
+ 
 };
 
+
+
 const displayWeather = () => {
+  $("#moneyConverter").remove();
   $("#item-A").html(`The Weather in ${country.capital}`);
   let weather = (screenSize.matches) ? 
             `https://openweathermap.org/img/wn/${country.weathericon}@2x.png`
     : `https://openweathermap.org/img/wn/${country.weathericon}.png`;
-    
-    $("#item-2").html(`<img src="${weather}" alt="Weather conditions">`)  
-  
-  $("#item-C").html("Maximum");
-  $("#item-3").html(`${country.maxtemp}&#176;C`);
-  $("#item-D").html("Minimum");
-  $("#item-4").html(`${country.mintemp}&#176;C`);
-  $("#item-E").html("Wind speed");
-  $("#item-5").html(`${country.windspeed} mph`);
-  $("#item-F").html("Humidity %");
-  $("#item-6").html(`${country.humidity}%`);
-  $("#item-7").html(country.weatherDescription);
+    $("#item-B").html(`<img src="${weather}" alt="Weather conditions">`)  
+  $("#item-3").html(`<strong>${country.maxtemp}&#176;C</strong>`); 
+$("#item-C").html(`${country.mintemp}&#176;C`);
+$("#item-2").html(country.weatherDescription);
+
+
    
 };
 
+
 const getMoneyData = (data) => {
   const results = data.data.conversion_rates;
-  country.USDexchange = results.USD;
-  country.EURexchange = results.EUR;
 
+  for (const currency in results) {
+    if (results.hasOwnProperty(currency)) {
+      country[`${currency}exchange`] = results[currency];
+    }
+  }
 };
 
 const displayMoney = () => {
   $("#item-A").html(`${country.demonym} currency (${country.currency})`);
-
   $("#item-B").html("Currency");
   $("#item-2").html(country.currencyName);
   $("#item-C").html("Symbol");
   $("#item-3").html(country.currencySymbol);
-  $("#item-E").html("Exchange Rate with US $");
-  $("#item-5").html(country.USDexchange);
-  $("#item-F").html("Exchange Rate with Euros &#8364;");
-  $("#item-6").html(country.EURexchange);
+  
+
+  // Check if the moneySection element exists within the current modal
+  let moneySection = $("#modalMoneySection");
+  if (moneySection.length === 0) {
+    // Create the moneySection element if it doesn't exist
+    moneySection = $('<div class="col m-2" id="modalMoneySection"></div>');
+    $(".modal-body .container").append(moneySection);
+  }
+
+  // Currency Converter
+  const converterHtml = `
+  <div id="moneyConverter">
+  <div class="row mb-3">
+    <div class="col">
+      <label for="amount" class="ms-2 mb-3"><strong>Converter:</strong></label>
+      <input type="number" id="amount" placeholder="Enter amount" />
+    </div>
+    <div class="col">
+      <label for="convertTo" class="ms-2 mb-3 px-2" >Convert to:</label>
+      <select class="px-4 ms-2" id="convertTo">
+        ${getCurrencyOptions()} <!-- Generate currency options here -->
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <button id="convertBtn" class="btn btn-primary">Convert</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col" id="result"></div>
+  </div>
+</div>
+
+  `;
+
+  moneySection.html(converterHtml);
+
+  $("#convertBtn").click(convertCurrency);
 };
+
+const getCurrencyOptions = () => {
+  let optionsHtml = "";
+
+  for (const currency in country) {
+    if (country.hasOwnProperty(currency) && currency.includes("exchange")) {
+      const currencyCode = currency.replace("exchange", "");
+      optionsHtml += `<option value="${currencyCode}">${currencyCode}</option>`;
+    }
+  }
+
+  return optionsHtml;
+};
+
+const convertCurrency = () => {
+  const amount = $("#amount").val();
+  const convertTo = $("#convertTo").val();
+  const exchangeRate = country[`${convertTo}exchange`];
+
+  if (!exchangeRate) {
+    $("#result").html("Exchange rate not available for the selected currency.");
+    return;
+  }
+  const convertedAmount = amount * exchangeRate;
+  $("#result").html(`Converted Amount: ${convertedAmount}`);
+};
+
+
+
+
 
 
 //populate markers
@@ -417,7 +578,7 @@ const displayEarthq = (data) => {
     shape: 'round',
     prefix: 'fa'
   })
-  let earthquakeMarker = L.marker([earthquake.lat, earthquake.lng], {icon: quakeMarker}).bindPopup(
+  let earthquakeMarker = L.marker([earthquake.lat, earthquake.lng], {icon: quakeMarker}).bindTooltip(
       `${severity} earthquake on ${earthquake.datetime} - magnitude ${earthquake.magnitude}`
 );
     earthquakeMarkers.addLayer(earthquakeMarker);
@@ -435,12 +596,11 @@ const displayWiki = (data) => {
     shape: 'square',
     prefix: 'fa'
   })
-  let wikiMarker = L.marker([wikiEntry.lat, wikiEntry.lng], {icon: aWikiMarker}).bindPopup(`<strong>${wikiEntry.title}</strong><br>${wikiEntry.summary}<br><a href="https://${wikiEntry.wikipediaUrl}" target="_blank">Wiki Link</a>`);
+  let wikiMarker = L.marker([wikiEntry.lat, wikiEntry.lng], {icon: aWikiMarker}).bindTooltip(`<strong>${wikiEntry.title}</strong><br>${wikiEntry.summary}<br><a href="https://${wikiEntry.wikipediaUrl}" target="_blank">Wiki Link</a>`);
     wikiMarkers.addLayer(wikiMarker);
   })
   wikiMarkerLayer = wikiMarkers.addTo(map).bringToFront();
 };
-
 
 const displayRegions = (data) => {
   
@@ -452,12 +612,13 @@ const displayRegions = (data) => {
     shape: 'star',
     prefix: 'fa'
   })
-  let regionMarker = L.marker([region.lat, region.lng], {icon: aRegionMarker}).bindPopup(`<strong>${region.adminName1}</strong><br>population ${region.population.toLocaleString("en-US")}`);
+  let regionMarker = L.marker([region.lat, region.lng], {icon: aRegionMarker}).bindTooltip(`<strong>${region.adminName1}</strong><br>population ${region.population.toLocaleString("en-US")}`);
     regionMarkers.addLayer(regionMarker);
   })
   regionMarkerLayer = regionMarkers.addTo(map).bringToFront();
   callApi("getWeather", clickLocationLat, clickLocationLng, getWeatherData, "metric");
   callApi("getMoney", country.currency, "", getMoneyData);
+  callApi("getNews", country.iso2, country.demonym, getNews);
  };
 
 
