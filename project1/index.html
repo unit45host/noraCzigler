@@ -9,83 +9,84 @@
         <link href="favicon.ico" rel="icon">
 
         <link rel="stylesheet" href="./libs/leaflet/leaflet.css">
-        <link rel="stylesheet" href="libs/leaflet/MarkerCluster.css">
-        <link rel="stylesheet" href="libs/leaflet/MarkerCluster.Default.css">
+        <link rel="stylesheet" href="./libs/leaflet/MarkerCluster.css">
+        <link rel="stylesheet" href="./libs/leaflet/MarkerCluster.Default.css">
         <link rel="stylesheet" href="./libs/leaflet/dist/css/leaflet.extra-markers.min.css">
-        <link rel="stylesheet" href="libs/leaflet/easy-button.css">
+        <link rel="stylesheet" href="./libs/leaflet/easy-button.css">
         <link href="./libs/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="./libs/css/style.css">
-        <link rel="stylesheet" href="../project1/libs/icon/fontawesome-free-6.4.0-web/js/all.js">
+        <link rel="stylesheet" href="./libs/icon/fontawesome-free-6.4.0-web/js/all.js">
     </head>
     <body>
         
         </div>
         <header>
-        <h1 id="title">gazetteer</h1>
-        <form>
-            <select id="countrySelect" class="form-select" name="country">
-            <option value="none"></option>      
-            </select>
-        </form>
-
+            
+            <div class="container">
+                <div class="row justify-content-center">
+                  <div class="col-lg-6">
+                    <form>
+                      <select id="countrySelect" class="form-select" name="country">
+                        <option value="none"></option>
+                      </select>
+                    </form>
+                  </div>
+                </div>
+              </div>
+      
         </header>
         <div id="map">
         </div>
     
-                <section class="modal" tabindex="-1" role="dialog">
-                    <div class="modal-dialog modal-dialog-scrollable" role="document">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title"></h5>   
-                            <p id="item-1">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeModal">
-                                    <span aria-hidden="true">&times;</span>
-                                  </button>
-                           </div>
-                        <div class="modal-body">              
-                            <table class="table table-striped">
-                            <tr>
-                                <td colspan=2 id="item-A"></td>
-                                
-                            </tr>                                
-                            <tr>
-                                <td id="item-B"></td>
-                                <td id="item-2"></td>
-                            </tr>
-                            <tr>
-                                <td id="item-C"></td>
-                                <td id="item-3"></td>
-                            </tr>
-                            <tr>
-                                <td id="item-D"></td>
-                                <td id="item-4"></td>
-                            </tr>   
-                            
-                            <tr>
-                                <td id="item-E"></td>
-                                <td id="item-5"></td>
-                            </tr>   
-                            <tr>
-                                <td id="item-F"></td>
-                                <td id="item-6"></td>
-                            </tr>
-                            <tr>
-                                <td id="item-G"></td>
-                                <td id="item-7"></td>
-                            </tr>   
-                        </table>
-                        </div>
-                       
-                    </div>
-                    </div>
-                </section>
+        <div class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-scrollable" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title"></h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="closeModal"></button>
+                </div>
+                <div class="modal-body">
+                  <table class="table table-hover table-success">
+                    <tr>
+                      <td colspan="2" id="item-A"></td>
+                    </tr>
+                    <tr>
+                      <td id="item-B"></td>
+                      <td id="item-2"></td>
+                    </tr>
+                    <tr>
+                      <td id="item-C"></td>
+                      <td id="item-3"></td>
+                    </tr>
+                    <tr>
+                      <td id="item-D"></td>
+                      <td id="item-4"></td>
+                    </tr>
+                    <tr>
+                      <td id="item-E"></td>
+                      <td id="item-5"></td>
+                    </tr>
+                    <tr>
+                      <td id="item-F"></td>
+                      <td id="item-6"></td>
+                    </tr>
+                    <tr>
+                      <td id="item-G"></td>
+                      <td id="item-7"></td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          
 
 
 </div>
       
         
         <script src="./libs/js/jquery-3.6.4.min.js"></script>
-        <script src="../project1/libs/icon/fontawesome-free-6.4.0-web/js/all.js"></script>
+        <script src="./libs/icon/fontawesome-free-6.4.0-web/js/all.js"></script>
         <script src="./libs/leaflet/leaflet.js"></script>   
         <script src="./libs/leaflet/leaflet.markercluster.js"></script>
         <script src="./libs/leaflet/dist/js/leaflet.extra-markers.min.js"></script>
