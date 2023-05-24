@@ -451,14 +451,32 @@ const displayWeather = () => {
   let weather = (screenSize.matches) ? 
             `https://openweathermap.org/img/wn/${country.weathericon}@2x.png`
     : `https://openweathermap.org/img/wn/${country.weathericon}.png`;
-    $("#item-B").html(`<img src="${weather}" alt="Weather conditions">`)  
-  $("#item-3").html(`<strong>${country.maxtemp}&#176;C</strong>`); 
-$("#item-C").html(`${country.mintemp}&#176;C`);
-$("#item-2").html(country.weatherDescription);
+
+    const weatherImg = `
+    <div class="row mb-3">
+      <div class="col">
+        <img class="weather-img" src="${weather}" alt="Weather conditions">
+      </div>
+    </div>
+  `;
+  
+  const weatherMax = `
+  <div class="row">
+  <div class="pt-5 pr-5 pr-md-8 mr-auto">
+    <h1 class="temp-max">${country.maxtemp} °C</h1>
+    <p class="temp-min">${country.mintemp} °C</p>
+  </div>
+</div>
 
 
-   
+`;
+
+  $("#item-2").html(weatherImg);
+  $("#item-B").html(weatherMax);
+
+  
 };
+
 
 
 const getMoneyData = (data) => {
