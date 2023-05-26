@@ -172,6 +172,9 @@ L.easyButton('fa-solid fa-circle-info', function(btn,_) {
   btn.button.style.color = 'lightblue';
   resetModal()
   displayTopLevel() 
+
+
+
   $(".modal").modal('show');}, function () {}).addTo(map);
 
 
@@ -217,51 +220,71 @@ const displaySelectData = (data) => {
 
 const getNews = (data) => {
   const results = data.data;
-  if (results[0]) {
-    country.newsTitle = results[0][0];
-    country.newsLink = results[0][1];
-    country.newsImage = results[0][2];
-  }
-  if (results[1]) {
-    country.newsTitle2 = results[1][0];
-    country.newsLink2 = results[1][1];
-    country.newsImage2 = results[1][2];
-  }
-  if (results[2]) {
-    country.newsTitle3 = results[2][0];
-    country.newsLink3 = results[2][1];
-    country.newsImage3 = results[2][2];
-  }
-  if (results[3]) {
-    country.newsTitle4 = results[3][0];
-    country.newsLink4 = results[3][1];
-    country.newsImage4 = results[3][2];
+  const defaultImage = "libs/breaking_news.png";
+
+  // Reset news properties
+  country.newsData = [];
+
+  for (let i = 0; i < results.length; i++) {
+    const newsEntry = results[i];
+    const title = newsEntry.title;
+    const link = newsEntry.link;
+    const image = newsEntry.image_url || defaultImage;
+    const sourceId = newsEntry.source_id;
+
+    // Store news data in an array of objects
+    country.newsData.push({
+      title: title,
+      link: link,
+      image: image,
+      sourceId: sourceId,
+    });
   }
 };
 
 
 const displayNews = () => {
-  $("#moneyConverter").remove();
   const defaultImage = "libs/breaking_news.png";
 
-    if(!country.newsImage || !country.newsImage2 || !country.newsImage3 || !country.newsImage4){
-        country.newsImage = defaultImage;
-        country.newsImage2 = defaultImage;
-        country.newsImage3 = defaultImage;
-        country.newsImage4 = defaultImage;
-    } 
-    
   $("#item-A").html("Latest News");
-  $("#item-B").html(`<img class="newsImage" src="libs/breaking_news.png">`);
-  $("#item-2").html(`<a href=${country.newsLink} target="_blank">${country.newsTitle}</a>`);
-  $("#item-C").html(`<img class="newsImage" src="libs/breaking_news.png">`);
-  $("#item-3").html(`<a href=${country.newsLink2} target="_blank">${country.newsTitle2}</a>`);
-  $("#item-D").html(`<img class="newsImage" src="libs/breaking_news.png">`);
-  $("#item-4").html(`<a href=${country.newsLink3} target="_blank">${country.newsTitle3}</a>`);
-  $("#item-E").html(`<img class="newsImage" src="libs/breaking_news.png">`);
-  $("#item-5").html(`<a href=${country.newsLink4} target="_blank">${country.newsTitle4}</a>`);
-};
 
+  // Clear previous news items
+  $(".newsItem").remove();
+
+  for (let i = 0; i < country.newsData.length; i++) {
+    const newsEntry = country.newsData[i];
+    const newsImage = newsEntry.image || defaultImage;
+    const newsLink = newsEntry.link;
+    const newsTitle = newsEntry.title;
+    const sourceId = newsEntry.sourceId;
+
+    const imageElement = `<img class="newsImage" src="${newsImage}" onerror="this.src='${defaultImage}';">`;
+    const titleElement = `<a href="${newsLink}" target="_blank">${newsTitle}</a>`;
+    const sourceElement = `<p id="source">${sourceId}</p>`;
+
+    const newsItem = `
+      <div class="row border-bottom newsItem">
+        <div class="col">
+          ${imageElement}
+        </div>
+        <div class="col">
+          <div class="row">
+            <div class="col">
+              ${titleElement}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              ${sourceElement}
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    $("#item-A").after(newsItem);
+  }
+};
 
 
 
@@ -392,6 +415,8 @@ polyGonLayer = L.geoJson(geoJsonFeature, {
 
 const displayTopLevel = () => {
   $("#moneyConverter").remove();
+  $(".newsItem").remove();
+  $("#item-B").removeClass("col-12");
   $("#item-A").html(country.officialName);
   $("#item-B").html("Local time");
   $("#item-2").html(`${country.currentHours}:${country.currentMinutes}${country.amOrPm}`);
@@ -434,49 +459,143 @@ const resetModal = () => {
     }
 
 
-const getWeatherData = (data) => {
-  const results = data.data;
-  country.weatherDescription = results.current.weather[0].description;
-  country.maxtemp = Math.round(results.daily[0].temp.max);
-  country.mintemp = Math.round(results.daily[0].temp.min);
-  country.weathericon = results.current.weather[0].icon;
- 
-};
+    const getWeatherData = (data) => {
+      const results = data.data;
+    
+      // Get weather data for today
+      country.weatherDescriptionToday = results.current.weather[0].description;
+      country.maxTempToday = Math.round(results.daily[0].temp.max);
+      country.minTempToday = Math.round(results.daily[0].temp.min);
+      country.weatherIconToday = results.current.weather[0].icon;
+    
+      // Get weather data for tomorrow
+      country.weatherDescriptionTomorrow = results.daily[1].weather[0].description;
+      country.maxTempTomorrow = Math.round(results.daily[1].temp.max);
+      country.minTempTomorrow = Math.round(results.daily[1].temp.min);
+      country.weatherIconTomorrow = results.daily[1].weather[0].icon;
+    
+      // Get weather data for the day after tomorrow
+      country.weatherDescriptionDayAfter = results.daily[2].weather[0].description;
+      country.maxTempDayAfter = Math.round(results.daily[2].temp.max);
+      country.minTempDayAfter = Math.round(results.daily[2].temp.min);
+      country.weatherIconDayAfter = results.daily[2].weather[0].icon;
+    };
+    
 
-
-
-const displayWeather = () => {
+  const displayWeather = () => {
   $("#moneyConverter").remove();
+   $(".newsItem").remove();
   $("#item-A").html(`The Weather in ${country.capital}`);
-  let weather = (screenSize.matches) ? 
-            `https://openweathermap.org/img/wn/${country.weathericon}@2x.png`
-    : `https://openweathermap.org/img/wn/${country.weathericon}.png`;
 
-    const weatherImg = `
-    <div class="row mb-3">
-      <div class="col">
-        <img class="weather-img" src="${weather}" alt="Weather conditions">
+  const currentDate = new Date();
+  const tomorrow = new Date(currentDate);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const dayAfterTomorrow = new Date(currentDate);
+  dayAfterTomorrow.setDate(dayAfterTomorrow.getDate() + 2);
+
+  const todayText = "TODAY";
+  const tomorrowText = formatDateWithOrdinalSuffix(tomorrow);
+  const dayAfterText = formatDateWithOrdinalSuffix(dayAfterTomorrow);
+
+  const weatherToday = `
+    <div class="row mb-3" id="weathertoday1" >
+      <div class="col-12 border m-2 ">
+        <p class="fw-bold fs-5 mt-3">${todayText}</p>
+        <div class="row align-items-center">
+          <div class="col text-center m-2">
+            <p id="todayConditions" class="fw-bold fs-6"></p>
+          </div>
+          <div class="col text-center">
+          <img id="todayIcon" class="weather-icon mt-0" src="https://openweathermap.org/img/wn/${country.weatherIconToday}.png" alt="Weather icon">
+          </div>
+          <div class="col text-center">
+            <p class="fw-bold fs-4 mb-0"><span id="todayMaxTemp">${country.maxTempToday}</span><sup>o</sup><span class="tempMetric">C</span></p>
+            <p class="fs-5 mt-0 text-secondary"><span id="todayMinTemp">${country.minTempToday}</span><sup>o</sup><span class="tempMetric">C</span></p>
+          </div>
+        </div>
       </div>
     </div>
   `;
-  
-  const weatherMax = `
-  <div class="row">
-  <div class="pt-5 pr-5 pr-md-8 mr-auto">
-    <h1 class="temp-max">${country.maxtemp} °C</h1>
-    <p class="temp-min">${country.mintemp} °C</p>
-  </div>
-</div>
+
+  const weatherTomorrow = `
+    <div class="row mb-3">
+      <div class="col-md border m-2">
+        <p class="fw-bold fs-5 mt-3">${tomorrowText}</p>
+        <div class="row">
+          <div class="col text-center m-2">
+            <p id="tomorrowConditions" class="fw-bold fs-6"></p>
+          </div>
+          <div class="col text-center">
+          <img id="tomorrowIcon" class="weather-icon mt-0" src="https://openweathermap.org/img/wn/${country.weatherIconTomorrow}.png" alt="Weather icon">
+          </div>
+          </div>
+          <div class="col text-center">
+            <p class="fw-bold fs-4 mb-0"><span id="tomorrowMaxTemp">${country.maxTempTomorrow}</span><sup>o</sup><span class="tempMetric">C</span></p>
+            <p class="fs-5 mt-0 text-secondary"><span id="tomorrowMinTemp">${country.minTempTomorrow}</span><sup>o</sup><span class="tempMetric">C</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  const weatherDayAfter = `
+    <div class="row mb-3">
+      <div class="col border m-2">
+        <p class="fw-bold fs-5 mt-3">${dayAfterText}</p>
+        <div class="row">
+          <div class="col text-center m-2">
+            <p id="dayAfterConditions" class="fw-bold fs-6"></p>
+          </div>
+          <div class="col text-center">
+          <img id="dayAfterIcon" class="weather-icon mt-0" src="https://openweathermap.org/img/wn/${country.weatherIconDayAfter}.png" alt="Weather icon">          </div>
+          <div class="col text-center">
+            <p class="fw-bold fs-4 mb-0"><span id="dayAfterMaxTemp">${country.maxTempDayAfter}</span><sup>o</sup><span class="tempMetric">C</span></p>
+            <p class="fs-5 mt-0 text-secondary"><span id="dayAfterMinTemp">${country.minTempDayAfter}</span><sup>o</sup><span class="tempMetric">C</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  $("#item-B").removeClass("col-12");
+  $("#item-B").removeClass("col-md");
+  $("#item-B").addClass("col-12");
+  $("#item-B").html(weatherToday);
+  $("#item-C").html(weatherTomorrow);
+  $("#item-3").html(weatherDayAfter);
 
 
-`;
-
-  $("#item-2").html(weatherImg);
-  $("#item-B").html(weatherMax);
-
-  
 };
 
+    
+    
+    
+    const formatDateWithOrdinalSuffix = (date) => {
+      const day = date.getDate();
+      const suffix = getOrdinalSuffix(day);
+      const formattedDate = date.toLocaleString("en-US", { weekday: "long" });
+      return `${formattedDate} ${day}${suffix}`;
+    };
+    
+    const getOrdinalSuffix = (number) => {
+      if (number >= 11 && number <= 13) {
+        return "th";
+      }
+      const lastDigit = number % 10;
+      switch (lastDigit) {
+        case 1:
+          return "st";
+        case 2:
+          return "nd";
+        case 3:
+          return "rd";
+        default:
+          return "th";
+      }
+    };
+    
+    
+    
+    
 
 
 const getMoneyData = (data) => {
@@ -490,6 +609,8 @@ const getMoneyData = (data) => {
 };
 
 const displayMoney = () => {
+  $(".newsItem").remove();
+  $("#item-B").removeClass("col-12");
   $("#item-A").html(`${country.demonym} currency (${country.currency})`);
   $("#item-B").html("Currency");
   $("#item-2").html(country.currencyName);
@@ -562,10 +683,6 @@ const convertCurrency = () => {
   const convertedAmount = amount * exchangeRate;
   $("#result").html(`Converted Amount: ${convertedAmount}`);
 };
-
-
-
-
 
 
 //populate markers
@@ -653,7 +770,7 @@ const resetMap = () => {
 
 
 const callApi = (phpToCall, parameter1, parameter2, callbackFun, parameter3, parameter4) => {
-  console.log(parameter1, parameter2)
+  console.log(parameter1, parameter2);
   const apiUrl = `libs/php/${phpToCall}.php`;
   $.ajax({
     url: apiUrl,
@@ -664,6 +781,7 @@ const callApi = (phpToCall, parameter1, parameter2, callbackFun, parameter3, par
       param2: parameter2,
       param3: parameter3,
       param4: parameter4,
+      apiKey: "<?php echo $newsKey; ?>", // Include the API key here
     },
     success: function (result) {
       callbackFun(result);
