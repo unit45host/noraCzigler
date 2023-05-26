@@ -269,7 +269,7 @@ const displayNews = () => {
         </div>
         <div class="col">
           <div class="row">
-            <div class="col">
+            <div class="col pt-3">
               ${titleElement}
             </div>
           </div>
