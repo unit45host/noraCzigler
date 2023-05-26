@@ -60,8 +60,8 @@ header {
   font-weight: bold;
  }
 .newsImage {
-  max-width: 50%;
-  padding-top: 20px;
+  width: 70%;
+  padding-top: 30px;
   padding-left: 30px;
 }
 
@@ -78,4 +78,8 @@ header {
 #source{
   text-align: right;
   font-style: italic;
+}
+
+#title{
+  padding-top: 20px;
 }
