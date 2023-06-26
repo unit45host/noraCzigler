@@ -1,0 +1,323 @@
+:root {
+
+  --lightgray: #d3d1d1;
+
+}
+
+
+#preloader {
+  display: flex;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  overflow: hidden;
+  background: var(--lightgray);
+  }
+
+
+
+button,
+select,
+option,
+input,
+.form-select,
+.form-control,
+.btn {
+  font-weight: 600;
+}
+
+
+
+body {
+  background-color: whitesmoke;
+  overflow-x: hidden;
+}
+
+
+header {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background-color: whitesmoke;
+
+}
+
+h1 {
+
+  padding: 1.5vw 1.5vw 1.5vw 8vw;
+
+}
+
+
+
+
+button {
+  margin: 0.15rem;
+}
+
+
+
+.btn-light {
+  background-color: var(--darkgray);
+}
+
+input, select {
+  text-align: left;
+}
+
+.addButtons {
+  display: inline-flex;
+  width: 100%;
+  justify-content: space-evenly;
+  margin: 3vh 1vw;
+}
+
+.addButtons {
+  display: none;
+}
+
+
+#resetHidingButton, #resetButton {
+  display: none;
+}
+
+#forename, #surname, #newDepartment, #newLocation, #newLocationName {
+  text-transform: capitalize;
+}
+
+#newLocationName {
+  margin-top: 1vh;
+  margin-bottom: 1vh;
+}
+
+#newLocation, #newDepartment {
+  width: 100%;
+}
+
+.tableFixedHead {
+  overflow:auto;
+  height: 80vh;
+  height: 75vh;
+}
+
+
+
+
+.smaller,
+.bigger {
+  width: 100%;
+  text-align: left;
+}
+
+
+
+
+
+ p {
+  
+  margin-bottom: 0;
+}A
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+#hidingButton {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-right: 2vw;
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+}
+
+
+
+ #modal-start {
+ 
+  font-weight: bolder;
+
+  font-size: 1.1rem;
+}
+
+
+.modal-body p {
+  font-size: 1.1rem;
+}
+
+.locationFlex, .departmentFlex {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 90%;
+  margin-left: 3vh;
+ border-bottom: 1px solid whitesmoke;
+}
+
+.modal {
+  background-color: transparent;
+}
+
+#listLocations, #listDepartments {
+  background-color: white;
+  padding: 1vh;
+  border-radius: 10px;
+  max-height: 30vh;
+  overflow-y: auto;
+
+}
+
+fieldset {
+  background-color: white;
+  padding: 2vw;
+  border-radius: 10px;
+  border: none;
+
+}
+
+#selectDeptLocation {
+  padding-top: 2vh;
+}
+
+.addEditForm, .viewEmployee, .newDepartmentForm, .newLocationForm {
+  display: none;
+
+}
+
+.newDepartmentForm, .newLocationForm {
+  padding: 2vh;
+}
+
+.viewEmployee{
+  text-align: center;
+}
+
+#emailFont {
+  font-size: 0.9rem;
+}
+
+.row-flex {
+  display: inline-flex;
+  justify-content: space-between;
+}
+
+.form-control.search {
+  width: 100%;
+  text-align: left;
+}
+
+ #addLoc, #addDept {
+  font-size: 0.8rem;
+  margin-right: 1.5vw
+}
+
+.btn-secondary{
+  margin-left: 50px;
+}
+@media screen and (min-width: 500px) {
+  #emailFont {
+    font-weight: lighter;
+    font-style: italic;
+  }
+}
+
+@media screen and (min-width: 650px) {
+  header {
+    justify-content: flex-start;
+    align-items: center;
+    border-bottom: 0.25rem solid whitesmoke;
+    box-shadow: 0.2rem 0.2rem 0.2rem var(--darkgray);
+  }
+
+
+
+  #hidingButton  {
+    display: none;
+  }
+
+  .addButtons {
+    margin: 1vh 5vw;
+    margin-top: 2vh;
+    display: inline-flex;
+    width: 90vw;
+    justify-content: space-around;
+  }
+
+  .addButtons {
+    display: block;
+  }
+
+.body {
+   padding-top: 1vh;
+
+ }
+
+
+.h5title{
+  padding-left: 20px;
+}
+
+  .bigger {
+    width: 25.25%;
+    text-align: left;
+  }
+
+  .smaller {
+    width: 24%;
+  }
+
+  #resetButton {
+    display: block;
+    float: right;
+  }
+
+
+
+
+
+ #addLoc, #addDept {
+    font-size: 1rem;
+}
+
+.modal {
+  background-color: transparent;
+  height: fit-content;
+  max-height: 100%;
+}
+
+.modal-body p {
+  font-size: 1rem;
+}
+
+#emailFont {
+  font-size: 1rem;
+}
+
+.row-flex {
+  width: 100%;
+
+}
+}
+
+
+.alert-warning {
+  background-color: white;
+  color: black;
+  text-align: left;
+}
+
+.btn-custom {
+  background-color: #e05c63;
+}
+
+#bars{
+  padding: 10px 0 10px 0;
+}
+
