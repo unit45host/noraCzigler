@@ -1,1 +1,191 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Company Directory</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+        <link href="favicon.png" rel="icon">
+        <link rel="stylesheet" href="./libs/icon/fontawesome-free-6.4.0-web/js/all.js">
+        <link href="./libs/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="./libs/css/style.css">
+    </head>
 
+    <body>     
+           <div id="preloader" class="d-flex justify-content-center align-items-center"> 
+            <div class="spinner-border text-primary" role="status"></div>
+            </div> 
+                 
+         <header>
+  
+         <h1>Company Directory</h1>
+        </header>
+        
+        <div id="hidingButton">
+    
+        <button class="btn btn-secondary bt-lg hidingButton" id="hidingSearchButton"><i class="fas fa-search"></i></button>
+        
+        </div> 
+        <form class="addButtons" id="disappearingButtons">
+                <button class="btn btn-secondary" id="addLoc">Add Locations</button>
+                <button class="btn btn-outline-dark" id="addDept"> Departments</button>
+
+                <!-- adds a new employee -->
+            <button class="btn btn-outline-primary" id="addStaff">Add Employee</button>
+            <!-- <button class="btn btn-secondary" id="refreshButton"><i class="fas fa-sync-alt"></i></button>  -->
+
+        </form>
+
+        <section class="tableFixedHead">
+            <div class="container">
+                <div class="row" id="bars">
+                  <div class="col-md-3">
+                    <input type="search" class="form-control" id="searchNames" aria-label="search employee names" placeholder="Search Employees" autocomplete="off">
+                  </div>
+                  <div class="col-md-3">
+                    <select class="form-select" id="selectDept">
+                      <option selected value="reset">Search Department</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <select class="form-select" id="selectLoc">
+                      <option value="reset">Search Location</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3"></div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                   
+                    <div id="mainLine"></div>
+                  </div>
+                </div>
+              </div>
+              
+            </section>
+                  
+            <section class="modal" tabindex="-1" role="dialog" id="extraInfo">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title"></h5>   
+                            <p id="item-1">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeModal">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                           </div>
+                           <div id="validation-text"></div>
+                            <div class="modal-body">
+                            <div class="addEditForm">
+                                <form>
+                                    <fieldset>
+                                      <div class="text-center">
+                                        <p id="modal-start"><span id="verb">Add</span> Employee</p>
+                                      </div>
+                                      <div class="align-items-sm-start">
+                                        <label for="forename" class="row-cols-auto form-label"><p>First Name</p></label>
+                                        <div class="row-cols-sm-3">
+                                          <input type="text" class="form-control" id="forename" autocomplete="off">
+                                        </div>
+                                      </div>
+                                      <div class="align-items-sm-start">
+                                        <label for="surname" class="row-cols-auto form-label"><p>Surname</p></label>
+                                        <div class="row-cols-sm-3">
+                                            <input type="text" class="form-control" id="surname" >
+                                        </div>
+                                      </div>
+                                      <br>
+                                      <div class="row-cols-sm-3">
+                                        <select class="form-select" id="modalSelectDept">
+                                          <option value="reset">Choose Department</option>
+                                        </select>
+                                      </div>
+                                      <br>
+                                      <div class="row-cols-sm-3">
+                                        <select class="form-select" id="modalSelectLoc">
+                                          <option value="reset">Choose Location</option>
+                                        </select>
+                                      </div>
+                                      <br>
+                                      <div class="align-items-sm-start">
+                                        <label for="email" class="row-cols-auto form-label"><p>Email</p></label>
+                                        <div class="row-cols-sm-3">
+                                          <input type="email" class="form-control" id="email">
+                                        </div>
+                                      </div>
+                                      <br>
+
+                                      <div class="text-center d-flex justify-content-center">
+                                        <button type="button" class="btn btn-primary" id="addOrEditStaff">Save</button>
+                                        <button type="button" class="close btn btn-outline-dark" aria-label="Close">Cancel</button>
+                                    </div>
+                                    
+                                   </div>
+                                    </fieldset>
+                                  </form>
+                                  
+                                   
+    
+                                  
+                        
+                            </div>
+                            
+                            <div class="viewEmployee">
+                                <fieldset>
+                                <h3 id="wholeName">First and Last name</h3>
+                                <p id="viewDepartment">Department</p>
+                                <p id="viewLocation">The Office</p>
+                                <p id="emailFont">Email address</p>
+                            </fieldset>    
+                            </div>
+
+                            <div class="newDepartmentForm">
+                                <h5 class="h5title"><strong>Departments</strong></h5>
+                                <section id="listDepartments"></section>
+                              <br>
+                              <form>
+                                  <fieldset>
+                            <h5>Add New Department</h5>
+                            <input type="text" class="form-control" id="newDepartment" minlength="2" maxlength="20" pattern="(^[A-Za-z -]+$)" autocomplete="off" autocapitalize="on" placeholder="New department" aria-label="name of new department"><br>
+                            <select class="form-select" id="selectDeptLocation">
+                            <option value="reset" selected>Choose location</option>
+                            </select>
+                            <br>
+                            <div class="text-center d-flex justify-content-center">
+                                <button type="button" class="btn btn-primary" id="addNewDepartment">Save</button>
+                                <button type="button" class="close btn btn-outline-dark" aria-label="Close">Cancel</button>
+                            </div>
+                            </fieldset>
+                            </form>
+                            </div>
+
+                        <form>
+                          <div class="newLocationForm">
+                            <h5 class="h5title"><strong>Office Locations</strong></h5>
+                            <section id="listLocations"></section>
+                            <br>
+                            <fieldset>
+                              <h5>Add New Location</h5>
+                              <input type="text" class="form-control" id="newLocation" minlength="2" maxlength="20" required aria-label="add name of new location" placeholder="New location">
+                              <br>
+                              <div class="text-center d-flex justify-content-center">
+                                <button type="button" class="btn btn-primary" id="addNewLocation">Save</button>
+                                <button type="button" class="close btn btn-outline-dark" aria-label="Close">Cancel</button>
+                              </div>
+                            </fieldset>
+                          </div>
+                        </form>
+                     </div>
+                     </div>
+                    </div>
+                
+                </section>
+      
+        
+        
+        <script src="./libs/js/jquery-3.6.4.min.js"></script>
+        <script src="./libs/js/bootstrap.bundle.min.js"></script>
+        <script src="./libs/js/app.js" async defer></script>
+        <script src="./libs/icon/fontawesome-free-6.4.0-web/js/all.js"></script>
+    </body>
+</html>
