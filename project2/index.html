@@ -12,177 +12,188 @@
     </head>
 
     <body>     
-           <div id="preloader" class="d-flex justify-content-center align-items-center"> 
+        <div id="preloader" class="d-flex justify-content-center align-items-center"> 
             <div class="spinner-border text-primary" role="status"></div>
-            </div> 
+        </div> 
                  
-         <header>
-  
-         <h1>Company Directory</h1>
+        <header>
+            <h1>Company Directory</h1>
         </header>
         
         <div id="hidingButton">
-    
-        <button class="btn btn-secondary bt-lg hidingButton" id="hidingSearchButton"><i class="fas fa-search"></i></button>
-        
+            <button class="btn btn-secondary bt-lg hidingButton" id="hidingSearchButton">
+                <i class="fas fa-search"></i>
+            </button>
         </div> 
-        <form class="addButtons" id="disappearingButtons">
-                <button class="btn btn-secondary" id="addLoc">Add Locations</button>
-                <button class="btn btn-outline-dark" id="addDept"> Departments</button>
+       
 
-                <!-- adds a new employee -->
-            <button class="btn btn-outline-primary" id="addStaff">Add Employee</button>
-            <!-- <button class="btn btn-secondary" id="refreshButton"><i class="fas fa-sync-alt"></i></button>  -->
-
-        </form>
-
+        <ul class="nav nav-tabs" id="myTab" role="tablist" class="addButtons" id="disappearingButtons">
+          <!-- <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="home" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Home</button>
+          </li> -->
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="addLoc" data-bs-toggle="tab" data-bs-target="#locations-tab-pane" type="button" role="tab" aria-controls="locations-tab-pane" aria-selected="true">Locations</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="addDept" data-bs-toggle="tab" data-bs-target="#departments-tab-pane" type="button" role="tab" aria-controls="departments-tab-pane" aria-selected="false">Departments</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="addStaff" data-bs-toggle="tab" data-bs-target="#employee-tab-pane" type="button" role="tab" aria-controls="employee-tab-pane" aria-selected="false">Add Employee</button>
+          </li>
+        </ul>
+        
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab"></div>
+          <div class="tab-pane fade" id="departments-tab-pane" role="tabpanel" aria-labelledby="departments-tab"></div>
+          <div class="tab-pane fade" id="employee-tab-pane" role="tabpanel" aria-labelledby="employee-tab"></div>
+          <div class="tab-pane fade" id="locations-tab-pane" role="tabpanel" aria-labelledby="locations-tab"></div>
+        </div>
+        
         <section class="tableFixedHead">
             <div class="container">
                 <div class="row" id="bars">
-                  <div class="col-md-3">
-                    <input type="search" class="form-control" id="searchNames" aria-label="search employee names" placeholder="Search Employees" autocomplete="off">
-                  </div>
-                  <div class="col-md-3">
-                    <select class="form-select" id="selectDept">
-                      <option selected value="reset">Search Department</option>
-                    </select>
-                  </div>
-                  <div class="col-md-3">
-                    <select class="form-select" id="selectLoc">
-                      <option value="reset">Search Location</option>
-                    </select>
-                  </div>
-                  <div class="col-md-3"></div>
+                    <div class="col-md-3">
+                        <input type="search" class="form-control" id="searchNames" aria-label="search employee names" placeholder="Search Employees" autocomplete="off">
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" id="selectDept">
+                            <option selected value="reset">Search Department</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" id="selectLoc">
+                            <option value="reset">Search Location</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3"></div>
                 </div>
-                <div class="row">
-                  <div class="col-md-12">
-                   
-                    <div id="mainLine"></div>
-                  </div>
-                </div>
-              </div>
+                
+                         <div id="mainLine"></div>
+                         <div id="secondLine"></div>
+                         <div id="thirdLine"></div>
+                    
               
-            </section>
+            </div>
+        </section>
                   
-            <section class="modal" tabindex="-1" role="dialog" id="extraInfo">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title"></h5>   
-                            <p id="item-1">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeModal">
-                                    <span aria-hidden="true">&times;</span>
-                                  </button>
-                           </div>
-                           <div id="validation-text"></div>
-                            <div class="modal-body">
-                            <div class="addEditForm">
-                                <form>
-                                    <fieldset>
-                                      <div class="text-center">
-                                        <p id="modal-start"><span id="verb">Add</span> Employee</p>
-                                      </div>
-                                      <div class="align-items-sm-start">
-                                        <label for="forename" class="row-cols-auto form-label"><p>First Name</p></label>
+        <section class="modal" tabindex="-1" role="dialog" id="extraInfo">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"></h5>   
+                        <p id="item-1">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeModal">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </p>
+                    </div>
+                    <div id="validation-text"></div>
+                    <div class="modal-body">
+                        <div class="addEditForm">
+                            <form>
+                                <fieldset>
+                                    <div class="text-center">
+                                        <p id="modal-start">
+                                            <span id="verb">Add</span> Employee
+                                        </p>
+                                    </div>
+                                    <div class="align-items-sm-start">
+                                        <label for="forename" class="row-cols-auto form-label">
+                                            <p>First Name</p>
+                                        </label>
                                         <div class="row-cols-sm-3">
-                                          <input type="text" class="form-control" id="forename" autocomplete="off">
+                                            <input type="text" class="form-control" id="forename" autocomplete="off">
                                         </div>
-                                      </div>
-                                      <div class="align-items-sm-start">
-                                        <label for="surname" class="row-cols-auto form-label"><p>Surname</p></label>
+                                    </div>
+                                    <div class="align-items-sm-start">
+                                        <label for="surname" class="row-cols-auto form-label">
+                                            <p>Surname</p>
+                                        </label>
                                         <div class="row-cols-sm-3">
-                                            <input type="text" class="form-control" id="surname" >
+                                            <input type="text" class="form-control" id="surname">
                                         </div>
-                                      </div>
-                                      <br>
-                                      <div class="row-cols-sm-3">
+                                    </div>
+                                    <br>
+                                    <div class="row-cols-sm-3">
                                         <select class="form-select" id="modalSelectDept">
-                                          <option value="reset">Choose Department</option>
+                                            <option value="reset">Choose Department</option>
                                         </select>
-                                      </div>
-                                      <br>
-                                      <div class="row-cols-sm-3">
+                                    </div>
+                                    <br>
+                                    <div class="row-cols-sm-3">
                                         <select class="form-select" id="modalSelectLoc">
-                                          <option value="reset">Choose Location</option>
+                                            <option value="reset">Choose Location</option>
                                         </select>
-                                      </div>
-                                      <br>
-                                      <div class="align-items-sm-start">
-                                        <label for="email" class="row-cols-auto form-label"><p>Email</p></label>
+                                    </div>
+                                    <br>
+                                    <div class="align-items-sm-start">
+                                        <label for="email" class="row-cols-auto form-label">
+                                            <p>Email</p>
+                                        </label>
                                         <div class="row-cols-sm-3">
-                                          <input type="email" class="form-control" id="email">
+                                            <input type="email" class="form-control" id="email">
                                         </div>
-                                      </div>
-                                      <br>
-
-                                      <div class="text-center d-flex justify-content-center">
+                                    </div>
+                                    <br>
+                                    <div class="text-center d-flex justify-content-center">
                                         <button type="button" class="btn btn-primary" id="addOrEditStaff">Save</button>
                                         <button type="button" class="close btn btn-outline-dark" aria-label="Close">Cancel</button>
-                                    </div>
-                                    
-                                   </div>
-                                    </fieldset>
-                                  </form>
-                                  
-                                   
-    
-                                  
-                        
-                            </div>
-                            
-                            <div class="viewEmployee">
-                                <fieldset>
-                                <h3 id="wholeName">First and Last name</h3>
-                                <p id="viewDepartment">Department</p>
-                                <p id="viewLocation">The Office</p>
-                                <p id="emailFont">Email address</p>
-                            </fieldset>    
-                            </div>
-
-                            <div class="newDepartmentForm">
-                                <h5 class="h5title"><strong>Departments</strong></h5>
-                                <section id="listDepartments"></section>
-                              <br>
-                              <form>
-                                  <fieldset>
-                            <h5>Add New Department</h5>
-                            <input type="text" class="form-control" id="newDepartment" minlength="2" maxlength="20" pattern="(^[A-Za-z -]+$)" autocomplete="off" autocapitalize="on" placeholder="New department" aria-label="name of new department"><br>
-                            <select class="form-select" id="selectDeptLocation">
-                            <option value="reset" selected>Choose location</option>
-                            </select>
-                            <br>
-                            <div class="text-center d-flex justify-content-center">
-                                <button type="button" class="btn btn-primary" id="addNewDepartment">Save</button>
-                                <button type="button" class="close btn btn-outline-dark" aria-label="Close">Cancel</button>
-                            </div>
+                                    </div>  
+                                </div>
                             </fieldset>
-                            </form>
-                            </div>
+                        </form>
+                    </div>
+                    
+                    <div class="viewEmployee">
+                        <fieldset>
+                            <h3 id="wholeName">First and Last name</h3>
+                            <p id="viewDepartment">Department</p>
+                            <p id="viewLocation">The Office</p>
+                            <p id="emailFont">Email address</p>
+                        </fieldset>    
+                    </div>
 
+                    <div class="newDepartmentForm">
+                        <h5 class="h5title"><strong>Departments</strong></h5>
+                        <section id="listDepartments"></section>
+                        <br>
                         <form>
-                          <div class="newLocationForm">
-                            <h5 class="h5title"><strong>Office Locations</strong></h5>
+                            <fieldset>
+                                <h5>Add New Department</h5>
+                                <input type="text" class="form-control" id="newDepartment" minlength="2" maxlength="20" pattern="(^[A-Za-z -]+$)" autocomplete="off" autocapitalize="on" placeholder="New department" aria-label="name of new department"><br>
+                                <select class="form-select" id="selectDeptLocation">
+                                    <option value="reset" selected>Choose location</option>
+                                </select>
+                                <br>
+                                <div class="text-center d-flex justify-content-center">
+                                    <button type="button" class="btn btn-primary" id="addNewDepartment">Save</button>
+                                    <button type="button" class="close btn btn-outline-dark" aria-label="Close">Cancel</button>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+
+                    <form>
+                        <div class="newLocationForm">
+                      
                             <section id="listLocations"></section>
                             <br>
                             <fieldset>
-                              <h5>Add New Location</h5>
-                              <input type="text" class="form-control" id="newLocation" minlength="2" maxlength="20" required aria-label="add name of new location" placeholder="New location">
-                              <br>
-                              <div class="text-center d-flex justify-content-center">
-                                <button type="button" class="btn btn-primary" id="addNewLocation">Save</button>
-                                <button type="button" class="close btn btn-outline-dark" aria-label="Close">Cancel</button>
-                              </div>
+                                <h5>Add New Location</h5>
+                                <input type="text" class="form-control" id="newLocation" minlength="2" maxlength="20" required aria-label="add name of new location" placeholder="New location">
+                                <br>
+                                <div class="text-center d-flex justify-content-center">
+                                    <button type="button" class="btn btn-primary" id="addNewLocation">Save</button>
+                                    <button type="button" class="close btn btn-outline-dark" aria-label="Close">Cancel</button>
+                                </div>
                             </fieldset>
-                          </div>
-                        </form>
-                     </div>
-                     </div>
-                    </div>
-                
-                </section>
-      
-        
-        
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+
         <script src="./libs/js/jquery-3.6.4.min.js"></script>
         <script src="./libs/js/bootstrap.bundle.min.js"></script>
         <script src="./libs/js/app.js" async defer></script>
